@@ -66,7 +66,7 @@ class OutpostFinder(BaseFinder):
         for virtual, local in settings.OUTPOST_STATIC_PATHS:
             if not path.startswith(virtual):
                 continue
-            path = os.path.join(local, path[len(virtual):])
+            path = os.path.join(local, path[len(virtual) :])
             if not os.path.exists(path):
                 continue
             if not all:
