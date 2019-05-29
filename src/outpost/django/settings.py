@@ -172,13 +172,13 @@ STATICFILES_FINDERS = (
     "compressor.finders.CompressorFinder",
 )
 OUTPOST_STATIC_PATHS = [
-    ("bootstrap", "/usr/share/javascript/bootstrap"),
-    ("bootswatch", "/usr/share/javascript/bootswatch"),
-    ("font-awesome", "/usr/share/fonts-font-awesome"),
-    ("jquery-cookie", "/usr/share/javascript/jquery-cookie"),
-    ("jquery", "/usr/share/javascript/jquery"),
-    ("jsrender", "/usr/share/javascript/jsrender"),
-    ("moment", "/usr/share/javascript/moment"),
+    ("bootstrap/", "/usr/share/javascript/bootstrap"),
+    ("bootswatch/", "/usr/share/javascript/bootswatch"),
+    ("font-awesome/", "/usr/share/fonts-font-awesome"),
+    ("jquery-cookie/", "/usr/share/javascript/jquery-cookie"),
+    ("jquery/", "/usr/share/javascript/jquery"),
+    ("jsrender/", "/usr/share/javascript/jsrender"),
+    ("moment/", "/usr/share/javascript/moment"),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
