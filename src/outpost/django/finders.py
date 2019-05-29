@@ -43,12 +43,20 @@ class OutpostFinder(BaseFinder):
                         id="outpost.django.E004",
                     )
                 )
+            if not virtual.endswith("/"):
+                errors.append(
+                    Error(
+                        f"Not a valid mapping for OUTPOST_STATIC_PATHS: {entry}",
+                        hint="Virtual path must end with slash.",
+                        id="outpost.django.E005",
+                    )
+                )
             if not os.path.exists(local):
                 errors.append(
                     Error(
                         f"Not a valid mapping for OUTPOST_STATIC_PATHS: {entry}",
                         hint="Local path does not exist.",
-                        id="outpost.django.E005",
+                        id="outpost.django.E006",
                     )
                 )
         return errors
@@ -58,7 +66,7 @@ class OutpostFinder(BaseFinder):
         for virtual, local in settings.OUTPOST_STATIC_PATHS:
             if not path.startswith(virtual):
                 continue
-            path = os.path.join(local, path[len(virtual) :])
+            path = os.path.join(local, path[len(virtual):])
             if not os.path.exists(path):
                 continue
             if not all:
