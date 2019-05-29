@@ -76,6 +76,9 @@ class OutpostFinder(BaseFinder):
 
     def list(self, ignore_patterns):
         for virtual, local in settings.OUTPOST_STATIC_PATHS:
-            storage = FileSystemStorage(location=local)
-            for path in utils.get_files(storage, ignore_patterns):
+            storage = FileSystemStorage(location=os.path.dirname(local))
+            files = utils.get_files(
+                storage, ignore_patterns, location=os.path.basename(local)
+            )
+            for path in files:
                 yield path, storage
