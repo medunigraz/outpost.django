@@ -166,10 +166,20 @@ USE_L10N = True
 USE_TZ = True
 
 STATICFILES_FINDERS = (
+    "outpost.django.finders.OutpostFinder",
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     "compressor.finders.CompressorFinder",
 )
+OUTPOST_STATIC_PATHS = [
+    ("bootstrap", "/usr/share/javascript/bootstrap"),
+    ("bootswatch", "/usr/share/javascript/bootswatch"),
+    ("font-awesome", "/usr/share/fonts-font-awesome"),
+    ("jquery-cookie", "/usr/share/javascript/jquery-cookie"),
+    ("jquery", "/usr/share/javascript/jquery"),
+    ("jsrender", "/usr/share/javascript/jsrender"),
+    ("moment", "/usr/share/javascript/moment"),
+]
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
 
