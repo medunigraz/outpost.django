@@ -46,10 +46,6 @@ setup(
     setup_requires=[
         'setuptools_scm',
     ],
-    install_requires=[
-        'django',
-        'outpost',
-    ],
     packages=find_namespace_packages(
         where='src',
         include=[
