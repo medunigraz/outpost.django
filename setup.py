@@ -48,8 +48,7 @@ setup(
     ],
     install_requires=[
         'django',
-        'multicorn',
-        'celery',
+        'outpost',
     ],
     packages=find_namespace_packages(
         where='src',
