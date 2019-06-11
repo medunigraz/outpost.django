@@ -1,3 +1,3 @@
 from . import celery  # NOQA
 
-__all__ = ["celery,"]
+__all__ = ["celery"]
