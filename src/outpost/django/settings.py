@@ -433,10 +433,10 @@ LOGGING = {
             "level": "ERROR",
             "class": "django.utils.log.AdminEmailHandler",
         },
-        "graypy": {
+        "graylog": {
             "level": "WARNING",
             "class": "graypy.GELFHandler",
-            "host": "graylog.medunigraz.at",
+            "host": "localhost",
             "port": 12201,
         },
     },
