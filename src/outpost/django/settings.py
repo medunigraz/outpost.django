@@ -421,7 +421,13 @@ LOGGING = {
         },
         "simple": {"format": "%(levelname)s %(message)s"},
     },
-    "filters": {"require_debug_true": {"()": "django.utils.log.RequireDebugTrue"}},
+    "filters": {
+        "require_debug_true": {"()": "dango.utils.log.RequireDebugTrue"},
+        "static_fields": {
+            "()": f"{__package__}.logging.StaticFieldFilter",
+            "fields": {"project": "development"},
+        },
+    },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
@@ -438,6 +444,7 @@ LOGGING = {
             "class": "graypy.GELFHandler",
             "host": "localhost",
             "port": 12201,
+            "filters": ["static_fields"],
         },
     },
     "loggers": {
