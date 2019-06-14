@@ -422,7 +422,7 @@ LOGGING = {
         "simple": {"format": "%(levelname)s %(message)s"},
     },
     "filters": {
-        "require_debug_true": {"()": "dango.utils.log.RequireDebugTrue"},
+        "require_debug_true": {"()": "django.utils.log.RequireDebugTrue"},
         "static_fields": {
             "()": f"{__package__}.logging.StaticFieldFilter",
             "fields": {"project": "development"},
