@@ -5,6 +5,7 @@ Django settings for Outpost project.
 import os
 
 import ldap
+import pint
 import saml2
 import saml2.attributemaps
 import saml2.saml
@@ -13,6 +14,8 @@ from django.utils.translation import ugettext_lazy as _
 from django_auth_ldap.config import GroupOfNamesType, LDAPSearch
 from docutils.core import publish_parts
 from geopy.geocoders import Nominatim
+
+ureg = pint.UnitRegistry()
 
 BASE_DIR = os.path.abspath(os.path.join(__file__, "../../../.."))
 
@@ -168,6 +171,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
 FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.TemporaryFileUploadHandler"]
+DATA_UPLOAD_MAX_MEMORY_SIZE = int(ureg('512MB').to('bytes').magnitude)
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 
 COMPRESS_PRECOMPILERS = [
     ("text/less", "outpost.django.compressor.DjangoLessFilter"),
