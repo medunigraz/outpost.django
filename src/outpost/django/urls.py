@@ -47,6 +47,7 @@ urlpatterns.extend(
         ),
         url(r"^salt/", include("outpost.django.salt.urls", namespace="salt")),
         url(r"^typo3/", include("outpost.django.typo3.urls", namespace="typo3")),
+        url(r"^redirect/", include("outpost.django.redirect.urls", namespace="redirect")),
         url(r"^", include("outpost.django.api.urls", namespace="api")),
         url(r"^", include("django.contrib.auth.urls", namespace="accounts")),
         url(r"^", include("outpost.django.base.urls", namespace="base")),
