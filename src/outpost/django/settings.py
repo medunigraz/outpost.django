@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django_dbconn_retry",
     "django.contrib.auth",
     "django.contrib.contenttypes",
+    "django.contrib.humanize",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
