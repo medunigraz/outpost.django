@@ -38,6 +38,10 @@ urlpatterns.extend(
             include("outpost.django.attendance.urls", namespace="attendance"),
         ),
         url(
+            r"^research/",
+            include("outpost.django.research.urls", namespace="research"),
+        ),
+        url(
             r"^campusonline/",
             include("outpost.django.campusonline.urls", namespace="campusonline"),
         ),
