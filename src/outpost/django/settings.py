@@ -365,6 +365,7 @@ CELERY_HAYSTACK_DEFAULT_TASK = (
 CELERY_HAYSTACK_QUEUE = "haystack"
 
 OAUTH2_PROVIDER = {
+    "APPLICATION_MODEL": "oauth2.Application",
     "SCOPES": {
         "read": "Read scope",
         "write": "Write scope",
@@ -375,8 +376,6 @@ OAUTH2_PROVIDER = {
         "holding": _("Manage holdings"),
     }
 }
-OAUTH2_PROVIDER_APPLICATION_MODEL = "oauth2.Application"
-
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_REPLACE_HTTPS_REFERER = True
