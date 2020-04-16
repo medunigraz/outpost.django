@@ -374,7 +374,8 @@ OAUTH2_PROVIDER = {
         "geo": _("Manage geopgraphic information"),
         "media": _("Manage multimedia data"),
         "holding": _("Manage holdings"),
-    }
+    },
+    "REQUEST_APPROVAL_PROMPT": "auto",
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
