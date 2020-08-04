@@ -29,10 +29,23 @@ urlpatterns.extend(
         url(r"^auth/api/", include("rest_framework.urls", namespace="rest_framework")),
         url(r"^prometheus/", include("django_prometheus.urls")),
         url(r"^auth/token/", authtoken.obtain_auth_token),
-        url(r"^saml2/", include(("djangosaml2.urls", "saml2") if django.VERSION >= (2, 1) else "djangosaml2.urls", namespace="saml2")),
+        url(
+            r"^saml2/",
+            include(
+                ("djangosaml2.urls", "saml2")
+                if django.VERSION >= (2, 1)
+                else "djangosaml2.urls",
+                namespace="saml2",
+            ),
+        ),
         url(
             r"^oauth2/",
-            include(("outpost.django.oauth2.urls", "oauth2") if django.VERSION >= (2, 1) else "outpost.django.oauth2.urls", namespace="oauth2"),
+            include(
+                ("outpost.django.oauth2.urls", "oauth2")
+                if django.VERSION >= (2, 1)
+                else "outpost.django.oauth2.urls",
+                namespace="oauth2",
+            ),
         ),
         url(r"^lti/", include("outpost.django.lti.urls", namespace="lti")),
         url(
