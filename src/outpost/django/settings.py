@@ -4,6 +4,7 @@ Django settings for Outpost project.
 
 import os
 
+import graypy
 import ldap
 import pint
 import saml2
@@ -57,11 +58,9 @@ INSTALLED_APPS = [
     "rest_framework_gis",
     "oauth2_provider",
     "corsheaders",
-    "social.apps.django_app.default",
     # 'dynamic_scraper',
     "haystack",
     "polymorphic",
-    "push_notifications",
     "ordered_model",
     "django_celery_results",
     "celery_haystack",
@@ -447,7 +446,9 @@ LOGGING = {
         },
         "graylog": {
             "level": "WARNING",
-            "class": "graypy.GELFHandler",
+            "class": "graypy.GELFUDPHandler"
+            if getattr(graypy, "__version__", tuple()) >= (1, 1, 3)
+            else "graypy.GELFHandler",
             "host": "localhost",
             "port": 12201,
             "filters": ["static_fields"],
