@@ -171,7 +171,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
 FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.TemporaryFileUploadHandler"]
-DATA_UPLOAD_MAX_MEMORY_SIZE = int(ureg('512MB').to('bytes').magnitude)
+DATA_UPLOAD_MAX_MEMORY_SIZE = int(ureg("512MB").to("bytes").magnitude)
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 
 COMPRESS_PRECOMPILERS = [
