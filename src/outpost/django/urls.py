@@ -65,6 +65,9 @@ urlpatterns.extend(
             include("outpost.django.networktoken.urls", namespace="networktoken"),
         ),
         url(r"^salt/", include("outpost.django.salt.urls", namespace="salt")),
+        url(
+            r"^security/", include("outpost.django.security.urls", namespace="security")
+        ),
         url(r"^typo3/", include("outpost.django.typo3.urls", namespace="typo3")),
         url(r"^borg/", include("outpost.django.borg.urls", namespace="borg")),
         url(
