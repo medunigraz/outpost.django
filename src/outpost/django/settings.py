@@ -63,7 +63,8 @@ INSTALLED_APPS = [
     "polymorphic",
     "ordered_model",
     "django_celery_results",
-    "celery_haystack",
+    "django_celery_beat",
+    #"celery_haystack",
     "rules.apps.AutodiscoverRulesConfig",
     "overextends",
     "netfields",
@@ -71,9 +72,10 @@ INSTALLED_APPS = [
     "taggit",
     "memoize",
     "django_filters",
-    "rest_hooks",
+    #"rest_hooks",
     "django_prometheus",
     "djangosaml2",
+    "recurrence",
 ]
 
 MIDDLEWARE = [
@@ -84,7 +86,6 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "corsheaders.middleware.CorsPostCsrfMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.auth.middleware.SessionAuthenticationMiddleware",
     "oauth2_provider.middleware.OAuth2TokenMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.contrib.sites.middleware.CurrentSiteMiddleware",
@@ -355,11 +356,11 @@ HAYSTACK_CONNECTIONS = {
     }
 }
 
-HAYSTACK_SIGNAL_PROCESSOR = "celery_haystack.signals.CelerySignalProcessor"
-CELERY_HAYSTACK_DEFAULT_TASK = (
-    "outpost.django.base.tasks.LockedCeleryHaystackSignalHandler"
-)
-CELERY_HAYSTACK_QUEUE = "haystack"
+#HAYSTACK_SIGNAL_PROCESSOR = "celery_haystack.signals.CelerySignalProcessor"
+#CELERY_HAYSTACK_DEFAULT_TASK = (
+#    "outpost.django.base.tasks.LockedCeleryHaystackSignalHandler"
+#)
+#CELERY_HAYSTACK_QUEUE = "haystack"
 
 OAUTH2_PROVIDER = {
     "APPLICATION_MODEL": "oauth2.Application",
@@ -399,6 +400,7 @@ RADIUS_USER = "radius"
 CELERY_BROKER_URL = "amqp://guest:guest@localhost//"
 CELERY_RESULTS_BACKEND = "django-db"
 CELERY_TASK_DEFAULT_QUEUE = "default"
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 CRISPY_TEMPLATE_PACK = "bootstrap3"
 

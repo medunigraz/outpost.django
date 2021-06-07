@@ -6,7 +6,12 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.static import serve
+from django.views.i18n import JavaScriptCatalog
 from rest_framework.authtoken import views as authtoken
+
+js_info_dict = {
+    'packages': ('recurrence', ),
+}
 
 urlpatterns = []
 
@@ -26,6 +31,7 @@ if settings.DEBUG:
 urlpatterns.extend(
     [
         url(r"^admin/", admin.site.urls),
+        url(r'^jsi18n/$', JavaScriptCatalog.as_view(), js_info_dict),
         url(r"^auth/api/", include("rest_framework.urls", namespace="rest_framework")),
         url(r"^prometheus/", include("django_prometheus.urls")),
         url(r"^auth/token/", authtoken.obtain_auth_token),
