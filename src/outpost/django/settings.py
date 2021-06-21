@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     "django_prometheus",
     "djangosaml2",
     "recurrence",
+    "django_sshworker",
 ]
 
 MIDDLEWARE = [
