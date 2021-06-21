@@ -15,6 +15,7 @@ from django.utils.translation import ugettext_lazy as _
 from django_auth_ldap.config import GroupOfNamesType, LDAPSearch
 from docutils.core import publish_parts
 from geopy.geocoders import Nominatim
+from markdown2 import Markdown
 
 ureg = pint.UnitRegistry()
 
@@ -76,6 +77,7 @@ INSTALLED_APPS = [
     "django_prometheus",
     "djangosaml2",
     "recurrence",
+    "markupfield",
     "django_sshworker",
 ]
 
@@ -384,7 +386,8 @@ CORS_ALLOW_METHODS = default_methods + ("START", "STOP", "END", "CANCEL", "DISCA
 DEFAULT_SRID = 3857
 
 MARKUP_FIELD_TYPES = [
-    ("ReST", lambda markup: publish_parts(source=markup, writer_name="html5")["body"])
+    ("markdown", Markdown().convert),
+    ("ReST", lambda markup: publish_parts(source=markup, writer_name="html5").get("body", ""))
 ]
 
 DOWNLOADVIEW_BACKEND = "django_downloadview.apache.XSendfileMiddleware"
