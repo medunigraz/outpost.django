@@ -73,6 +73,7 @@ urlpatterns.extend(
         url(r"^salt/", include("outpost.django.salt.urls", namespace="salt")),
         url(r"^typo3/", include("outpost.django.typo3.urls", namespace="typo3")),
         url(r"^borg/", include("outpost.django.borg.urls", namespace="borg")),
+        url(r"^video/", include("outpost.django.video.urls", namespace="video")),
         url(
             r"^redirect/", include("outpost.django.redirect.urls", namespace="redirect")
         ),
