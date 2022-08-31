@@ -5,6 +5,7 @@ import django
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 from django.views.static import serve
 from django.views.i18n import JavaScriptCatalog
 from rest_framework.authtoken import views as authtoken
@@ -27,6 +28,8 @@ if settings.DEBUG:
         ]
     )
     urlpatterns.extend([url(r"^__debug__/", include(debug_toolbar.urls))])
+
+admin.site.login = login_required(admin.site.login)
 
 urlpatterns.extend(
     [
