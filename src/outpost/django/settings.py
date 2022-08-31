@@ -90,6 +90,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsPostCsrfMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "oauth2_provider.middleware.OAuth2TokenMiddleware",
+    "djangosaml2.middleware.SamlSessionMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.contrib.sites.middleware.CurrentSiteMiddleware",
     # 'django_downloadview.SmartDownloadMiddleware',
