@@ -79,6 +79,8 @@ INSTALLED_APPS = [
     "recurrence",
     "markupfield",
     "django_sshworker",
+    "ckeditor",
+    "ckeditor_uploader",
 ]
 
 MIDDLEWARE = [
@@ -176,6 +178,37 @@ MEDIA_URL = "/media/"
 FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.TemporaryFileUploadHandler"]
 DATA_UPLOAD_MAX_MEMORY_SIZE = int(ureg("512MB").to("bytes").magnitude)
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
+
+CKEDITOR_UPLOAD_PATH = "ckeditor/"
+CKEDITOR_CONFIGS = {
+    'default': {
+        "skin": "moono-lisa",
+        "toolbar_Basic": [["Source", "-", "Bold", "Italic"]],
+        "toolbar_Full": [
+            [
+                "Styles",
+                "Format",
+                "Bold",
+                "Italic",
+                "Underline",
+                "Strike",
+                "SpellChecker",
+                "Undo",
+                "Redo",
+            ],
+            ["Link", "Unlink", "Anchor"],
+            ["Image", "Table", "HorizontalRule"],
+            ["TextColor", "BGColor"],
+            ["Smiley", "SpecialChar"],
+            ["Source"],
+        ],
+        "toolbar": "Full",
+        "height": 291,
+        "width": 835,
+        "filebrowserWindowWidth": 940,
+        "filebrowserWindowHeight": 725,
+    }
+}
 
 COMPRESS_PRECOMPILERS = [
     ("text/less", "outpost.django.compressor.DjangoLessFilter"),
