@@ -3,6 +3,7 @@ Outpost URL Configuration
 """
 import django
 from django.conf import settings
+from django.urls import path
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
@@ -37,6 +38,7 @@ urlpatterns.extend(
         url(r'^jsi18n/$', JavaScriptCatalog.as_view(), js_info_dict),
         url(r"^auth/api/", include("rest_framework.urls", namespace="rest_framework")),
         url(r"^prometheus/", include("django_prometheus.urls")),
+        path('ckeditor/', include('ckeditor_uploader.urls')),
         url(r"^auth/token/", authtoken.obtain_auth_token),
         url(
             r"^saml2/",
@@ -74,6 +76,7 @@ urlpatterns.extend(
             include("outpost.django.networktoken.urls", namespace="networktoken"),
         ),
         url(r"^salt/", include("outpost.django.salt.urls", namespace="salt")),
+        url(r"^signage/", include("outpost.django.signage.urls", namespace="signage")),
         url(r"^typo3/", include("outpost.django.typo3.urls", namespace="typo3")),
         url(r"^borg/", include("outpost.django.borg.urls", namespace="borg")),
         url(r"^video/", include("outpost.django.video.urls", namespace="video")),
