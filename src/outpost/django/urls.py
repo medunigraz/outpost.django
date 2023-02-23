@@ -30,7 +30,8 @@ if settings.DEBUG:
     )
     urlpatterns.extend([url(r"^__debug__/", include(debug_toolbar.urls))])
 
-admin.site.login = login_required(admin.site.login)
+if not settings.DEBUG:
+    admin.site.login = login_required(admin.site.login)
 
 urlpatterns.extend(
     [
