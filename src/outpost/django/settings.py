@@ -210,6 +210,8 @@ CKEDITOR_CONFIGS = {
     }
 }
 
+GUARDIAN_GET_CONTENT_TYPE = 'polymorphic.contrib.guardian.get_polymorphic_base_content_type'
+
 COMPRESS_PRECOMPILERS = [
     ("text/less", "outpost.django.compressor.DjangoLessFilter"),
     ("text/x-scss", "django_pyscss.compressor.DjangoScssFilter"),
