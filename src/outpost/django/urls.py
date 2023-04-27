@@ -59,6 +59,7 @@ urlpatterns.extend(
                 namespace="oauth2",
             ),
         ),
+        url(r"^intranet/", include("outpost.django.intranet.urls", namespace="intranet")),
         url(r"^lti/", include("outpost.django.lti.urls", namespace="lti")),
         url(
             r"^attendance/",
