@@ -80,6 +80,7 @@ urlpatterns.extend(
         url(r"^pke/", include("outpost.django.pke.urls", namespace="pke")),
         url(r"^salt/", include("outpost.django.salt.urls", namespace="salt")),
         url(r"^signage/", include("outpost.django.signage.urls", namespace="signage")),
+        url(r"^feed/", include("outpost.django.feed.urls", namespace="feed")),
         url(r"^typo3/", include("outpost.django.typo3.urls", namespace="typo3")),
         url(r"^borg/", include("outpost.django.borg.urls", namespace="borg")),
         url(r"^video/", include("outpost.django.video.urls", namespace="video")),
