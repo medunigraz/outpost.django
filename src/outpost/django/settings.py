@@ -81,6 +81,9 @@ INSTALLED_APPS = [
     "django_sshworker",
     "ckeditor",
     "ckeditor_uploader",
+    "drf_spectacular",
+    "constance",
+    "global_permissions",
 ]
 
 MIDDLEWARE = [
@@ -179,6 +182,9 @@ FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.TemporaryFileUploadHand
 FILE_UPLOAD_PERMISSIONS = 0o664
 DATA_UPLOAD_MAX_MEMORY_SIZE = int(ureg("512MB").to("bytes").magnitude)
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
+
+CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
+CONSTANCE_DATABASE_CACHE_BACKEND = "default"
 
 CKEDITOR_UPLOAD_PATH = "ckeditor/"
 CKEDITOR_CONFIGS = {
@@ -383,10 +389,19 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
     "DEFAULT_METADATA_CLASS": "outpost.django.api.metadata.ExtendedMetadata",
+    "DEFAULT_SCHEMA_CLASS": "outpost.django.api.openapi.AutoSchema",
     "HTML_SELECT_CUTOFF": 200,
 }
 
 REST_FRAMEWORK_EXTENSIONS = {"DEFAULT_CACHE_RESPONSE_TIMEOUT": 3600}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': _("API @ Med Uni Graz"),
+    'DESCRIPTION': _('Data management portal of the Medical University of Graz'),
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'GET_MOCK_REQUEST': 'outpost.django.api.metadata.build_mock_request',
+}
 
 HAYSTACK_CONNECTIONS = {
     "default": {
