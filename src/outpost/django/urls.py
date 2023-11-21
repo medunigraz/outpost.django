@@ -77,6 +77,10 @@ urlpatterns.extend(
             r"^networktoken/",
             include("outpost.django.networktoken.urls", namespace="networktoken"),
         ),
+        url(
+            r"^dnaustria/",
+            include("outpost.django.dnaustria.urls", namespace="dnaustria"),
+        ),
         url(r"^pke/", include("outpost.django.pke.urls", namespace="pke")),
         url(r"^salt/", include("outpost.django.salt.urls", namespace="salt")),
         url(r"^signage/", include("outpost.django.signage.urls", namespace="signage")),
