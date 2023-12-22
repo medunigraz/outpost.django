@@ -82,6 +82,7 @@ urlpatterns.extend(
             include("outpost.django.dnaustria.urls", namespace="dnaustria"),
         ),
         url(r"^pke/", include("outpost.django.pke.urls", namespace="pke")),
+        url(r"^kages/", include("outpost.django.kages.urls", namespace="kages")),
         url(r"^salt/", include("outpost.django.salt.urls", namespace="salt")),
         url(r"^signage/", include("outpost.django.signage.urls", namespace="signage")),
         url(r"^feed/", include("outpost.django.feed.urls", namespace="feed")),
