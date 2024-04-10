@@ -84,6 +84,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "constance",
     "global_permissions",
+    "formtools",
 ]
 
 MIDDLEWARE = [
