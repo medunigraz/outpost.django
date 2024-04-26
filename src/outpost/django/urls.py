@@ -1,7 +1,11 @@
 """
 Outpost URL Configuration
 """
+import logging
+from importlib import import_module
+
 import django
+from django.apps import apps
 from django.conf import settings
 from django.conf.urls import (
     include,
@@ -13,6 +17,8 @@ from django.urls import path
 from django.views.i18n import JavaScriptCatalog
 from django.views.static import serve
 from rest_framework.authtoken import views as authtoken
+
+logger = logging.getLogger(__name__)
 
 js_info_dict = {
     "packages": ("recurrence",),
@@ -53,60 +59,26 @@ urlpatterns.extend(
                 namespace="saml2",
             ),
         ),
-        url(
-            r"^oauth2/",
-            include(
-                ("outpost.django.oauth2.urls", "oauth2")
-                if django.VERSION >= (2, 1)
-                else "outpost.django.oauth2.urls",
-                namespace="oauth2",
-            ),
-        ),
-        url(
-            r"^intranet/", include("outpost.django.intranet.urls", namespace="intranet")
-        ),
-        url(r"^lti/", include("outpost.django.lti.urls", namespace="lti")),
-        url(
-            r"^attendance/",
-            include("outpost.django.attendance.urls", namespace="attendance"),
-        ),
-        url(
-            r"^research/",
-            include("outpost.django.research.urls", namespace="research"),
-        ),
-        url(
-            r"^campusonline/",
-            include("outpost.django.campusonline.urls", namespace="campusonline"),
-        ),
-        url(
-            r"^networktoken/",
-            include("outpost.django.networktoken.urls", namespace="networktoken"),
-        ),
-        url(
-            r"^dnaustria/",
-            include("outpost.django.dnaustria.urls", namespace="dnaustria"),
-        ),
-        url(r"^pke/", include("outpost.django.pke.urls", namespace="pke")),
-        url(r"^kages/", include("outpost.django.kages.urls", namespace="kages")),
-        url(r"^salt/", include("outpost.django.salt.urls", namespace="salt")),
-        url(r"^mfa/", include("outpost.django.mfa.urls", namespace="mfa")),
-        url(r"^signage/", include("outpost.django.signage.urls", namespace="signage")),
-        url(r"^feed/", include("outpost.django.feed.urls", namespace="feed")),
-        url(r"^typo3/", include("outpost.django.typo3.urls", namespace="typo3")),
-        url(r"^borg/", include("outpost.django.borg.urls", namespace="borg")),
-        url(r"^video/", include("outpost.django.video.urls", namespace="video")),
-        url(
-            r"^restaurant/",
-            include("outpost.django.restaurant.urls", namespace="restaurant"),
-        ),
-        url(
-            r"^redirect/", include("outpost.django.redirect.urls", namespace="redirect")
-        ),
-        url(r"^", include("outpost.django.api.urls", namespace="api")),
+    ]
+)
+
+for app in sorted(apps.get_app_configs(), key=lambda app: app.label):
+    if not app.name.startswith("outpost.django."):
+        continue
+    logger.debug(f"Importing urls from {app.name}")
+    urls = f"{app.name}.urls"
+    try:
+        module = import_module(urls)
+    except ModuleNotFoundError:
+        continue
+    path = getattr(module, "path", f"^{app.label}/")
+    urlpatterns.append(url(path, include(urls, namespace=app.label)))
+
+urlpatterns.extend(
+    [
         url(
             r"^",
             include(("django.contrib.auth.urls", "accounts"), namespace="accounts"),
         ),
-        url(r"^", include("outpost.django.base.urls", namespace="base")),
     ]
 )
