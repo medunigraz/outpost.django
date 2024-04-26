@@ -12,7 +12,10 @@ import saml2.attributemaps
 import saml2.saml
 from corsheaders.defaults import default_methods
 from django.utils.translation import ugettext_lazy as _
-from django_auth_ldap.config import GroupOfNamesType, LDAPSearch
+from django_auth_ldap.config import (
+    GroupOfNamesType,
+    LDAPSearch,
+)
 from docutils.core import publish_parts
 from geopy.geocoders import Nominatim
 from markdown2 import Markdown
@@ -65,7 +68,7 @@ INSTALLED_APPS = [
     "ordered_model",
     "django_celery_results",
     "django_celery_beat",
-    #"celery_haystack",
+    # "celery_haystack",
     "rules.apps.AutodiscoverRulesConfig",
     "overextends",
     "netfields",
@@ -73,7 +76,7 @@ INSTALLED_APPS = [
     "taggit",
     "memoize",
     "django_filters",
-    #"rest_hooks",
+    # "rest_hooks",
     "django_prometheus",
     "djangosaml2",
     "recurrence",
@@ -159,20 +162,28 @@ USE_L10N = True
 USE_TZ = True
 
 STATICFILES_FINDERS = (
-    "outpost.django.finders.OutpostFinder",
+    "outpost.django.finders.SystemFinder",
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     "compressor.finders.CompressorFinder",
 )
-OUTPOST_STATIC_PATHS = [
-    ("bootstrap/", "/usr/share/javascript/bootstrap"),
-    ("bootswatch/", "/usr/share/javascript/bootswatch"),
-    ("font-awesome/", "/usr/share/fonts-font-awesome"),
-    ("jquery-cookie/", "/usr/share/javascript/jquery-cookie"),
-    ("jquery/", "/usr/share/javascript/jquery"),
-    ("jsrender/", "/usr/share/javascript/jsrender"),
-    ("moment/", "/usr/share/javascript/moment"),
-]
+
+SYSTEM_STATIC_PATHS = {
+    "bootstrap/": (
+        "/usr/share/sass/bootstrap",
+        "/usr/share/nodejs/bootstrap/dist/js",
+    ),
+    "fonts-fork-awesome/": ("/usr/share/fonts-fork-awesome",),
+    "jquery/": ("/usr/share/javascript/jquery",),
+    "popper/": ("/usr/share/nodejs/popper.js/dist/umd",),
+    "jquery-cookie/": ("/usr/share/javascript/jquery-cookie",),
+    "moment/": ("/usr/share/javascript/moment",),
+    "chart.js/": ("/usr/share/javascript/chart.js",),
+    "jsrender/": ("/usr/share/javascript/jsrender",),
+    "pikaday/": ("/usr/share/nodejs/pikaday",),
+}
+
+
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
 
@@ -189,7 +200,7 @@ CONSTANCE_DATABASE_CACHE_BACKEND = "default"
 
 CKEDITOR_UPLOAD_PATH = "ckeditor/"
 CKEDITOR_CONFIGS = {
-    'default': {
+    "default": {
         "skin": "moono-lisa",
         "toolbar_Basic": [["Source", "-", "Bold", "Italic"]],
         "toolbar_Full": [
@@ -218,11 +229,13 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-GUARDIAN_GET_CONTENT_TYPE = 'polymorphic.contrib.guardian.get_polymorphic_base_content_type'
+GUARDIAN_GET_CONTENT_TYPE = (
+    "polymorphic.contrib.guardian.get_polymorphic_base_content_type"
+)
 
 COMPRESS_PRECOMPILERS = [
     ("text/less", "outpost.django.compressor.DjangoLessFilter"),
-    ("text/x-scss", "django_pyscss.compressor.DjangoScssFilter"),
+    ("text/x-scss", "outpost.django.compressor.DjangoSassCompiler"),
 ]
 
 LOGIN_URL = "accounts:login"
@@ -397,11 +410,11 @@ REST_FRAMEWORK = {
 REST_FRAMEWORK_EXTENSIONS = {"DEFAULT_CACHE_RESPONSE_TIMEOUT": 3600}
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': _("API @ Med Uni Graz"),
-    'DESCRIPTION': _('Data management portal of the Medical University of Graz'),
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-    'GET_MOCK_REQUEST': 'outpost.django.api.metadata.build_mock_request',
+    "TITLE": _("API @ Med Uni Graz"),
+    "DESCRIPTION": _("Data management portal of the Medical University of Graz"),
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "GET_MOCK_REQUEST": "outpost.django.api.metadata.build_mock_request",
 }
 
 HAYSTACK_CONNECTIONS = {
@@ -412,11 +425,11 @@ HAYSTACK_CONNECTIONS = {
     }
 }
 
-#HAYSTACK_SIGNAL_PROCESSOR = "celery_haystack.signals.CelerySignalProcessor"
-#CELERY_HAYSTACK_DEFAULT_TASK = (
+# HAYSTACK_SIGNAL_PROCESSOR = "celery_haystack.signals.CelerySignalProcessor"
+# CELERY_HAYSTACK_DEFAULT_TASK = (
 #    "outpost.django.base.tasks.LockedCeleryHaystackSignalHandler"
-#)
-#CELERY_HAYSTACK_QUEUE = "haystack"
+# )
+# CELERY_HAYSTACK_QUEUE = "haystack"
 
 OAUTH2_PROVIDER = {
     "APPLICATION_MODEL": "oauth2.Application",
@@ -434,13 +447,25 @@ OAUTH2_PROVIDER = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_REPLACE_HTTPS_REFERER = True
-CORS_ALLOW_METHODS = default_methods + ("START", "STOP", "END", "CANCEL", "DISCARD", "LEAVE")
+CORS_ALLOW_METHODS = default_methods + (
+    "START",
+    "STOP",
+    "END",
+    "CANCEL",
+    "DISCARD",
+    "LEAVE",
+)
 
 DEFAULT_SRID = 3857
 
 MARKUP_FIELD_TYPES = [
     ("markdown", Markdown().convert),
-    ("ReST", lambda markup: publish_parts(source=markup, writer_name="html5").get("body", ""))
+    (
+        "ReST",
+        lambda markup: publish_parts(source=markup, writer_name="html5").get(
+            "body", ""
+        ),
+    ),
 ]
 
 DOWNLOADVIEW_BACKEND = "django_downloadview.apache.XSendfileMiddleware"
@@ -459,7 +484,7 @@ CELERY_RESULTS_BACKEND = "django-db"
 CELERY_TASK_DEFAULT_QUEUE = "default"
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
-CRISPY_TEMPLATE_PACK = "bootstrap3"
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 HOOK_DELIVERER = "outpost.django.base.hooks.deliver_hook_wrapper"
 HOOK_EVENTS = {}

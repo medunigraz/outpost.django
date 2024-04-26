@@ -1,24 +1,28 @@
-import os
 import logging
-import django
+import os
 from importlib import import_module
+
+import django
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "outpost.django.settings")
 
 django.setup()
 
 from a2wsgi import WSGIMiddleware
-from django.apps import apps
-#from django.core.asgi import get_asgi_application
-from django.core.wsgi import get_wsgi_application
 from channels.auth import AuthMiddlewareStack
-from channels.routing import ProtocolTypeRouter, URLRouter, ChannelNameRouter
+from channels.routing import (
+    ChannelNameRouter,
+    ProtocolTypeRouter,
+    URLRouter,
+)
+from django.apps import apps
 
-
+# from django.core.asgi import get_asgi_application
+from django.core.wsgi import get_wsgi_application
 
 logger = logging.getLogger(__name__)
 
-#django_asgi_app = get_asgi_application()
+# django_asgi_app = get_asgi_application()
 django_asgi_app = WSGIMiddleware(get_wsgi_application())
 
 urls = list()

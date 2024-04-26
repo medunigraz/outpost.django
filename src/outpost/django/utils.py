@@ -1,4 +1,7 @@
 import locale
+from base64 import urlsafe_b64encode
+from pathlib import PurePosixPath
+from uuid import uuid4
 
 from IPy import IP
 
@@ -26,3 +29,11 @@ class LocaleManager:
 
     def __exit__(self, exc_type, exc_value, traceback):
         locale.setlocale(locale.LC_ALL, self.orig)
+
+
+class Uuid4Upload(str):
+    def __new__(cls, instance, filename):
+        f = PurePosixPath(filename)
+        u = urlsafe_b64encode(uuid4().bytes).decode("ascii").rstrip("=")
+        p = PurePosixPath(instance.__module__, instance._meta.object_name)
+        return str.__new__(cls, p.joinpath(u).with_suffix(f.suffix))

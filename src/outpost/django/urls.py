@@ -3,16 +3,19 @@ Outpost URL Configuration
 """
 import django
 from django.conf import settings
-from django.urls import path
-from django.conf.urls import include, url
+from django.conf.urls import (
+    include,
+    url,
+)
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
-from django.views.static import serve
+from django.urls import path
 from django.views.i18n import JavaScriptCatalog
+from django.views.static import serve
 from rest_framework.authtoken import views as authtoken
 
 js_info_dict = {
-    'packages': ('recurrence', ),
+    "packages": ("recurrence",),
 }
 
 urlpatterns = []
@@ -36,10 +39,10 @@ if not settings.DEBUG:
 urlpatterns.extend(
     [
         url(r"^admin/", admin.site.urls),
-        url(r'^jsi18n/$', JavaScriptCatalog.as_view(), js_info_dict),
+        url(r"^jsi18n/$", JavaScriptCatalog.as_view(), js_info_dict),
         url(r"^auth/api/", include("rest_framework.urls", namespace="rest_framework")),
         url(r"^prometheus/", include("django_prometheus.urls")),
-        path('ckeditor/', include('ckeditor_uploader.urls')),
+        path("ckeditor/", include("ckeditor_uploader.urls")),
         url(r"^auth/token/", authtoken.obtain_auth_token),
         url(
             r"^saml2/",
@@ -59,7 +62,9 @@ urlpatterns.extend(
                 namespace="oauth2",
             ),
         ),
-        url(r"^intranet/", include("outpost.django.intranet.urls", namespace="intranet")),
+        url(
+            r"^intranet/", include("outpost.django.intranet.urls", namespace="intranet")
+        ),
         url(r"^lti/", include("outpost.django.lti.urls", namespace="lti")),
         url(
             r"^attendance/",
@@ -90,6 +95,10 @@ urlpatterns.extend(
         url(r"^typo3/", include("outpost.django.typo3.urls", namespace="typo3")),
         url(r"^borg/", include("outpost.django.borg.urls", namespace="borg")),
         url(r"^video/", include("outpost.django.video.urls", namespace="video")),
+        url(
+            r"^restaurant/",
+            include("outpost.django.restaurant.urls", namespace="restaurant"),
+        ),
         url(
             r"^redirect/", include("outpost.django.redirect.urls", namespace="redirect")
         ),

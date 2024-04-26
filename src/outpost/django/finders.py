@@ -1,84 +1,120 @@
-import os
-from django.contrib.staticfiles import utils
+from itertools import chain
+from pathlib import Path
+
 from django.conf import settings
-from django.core.files.storage import FileSystemStorage
+from django.contrib.staticfiles import utils
 from django.contrib.staticfiles.finders import BaseFinder
 from django.core.checks import Error
+from django.core.files.storage import FileSystemStorage
+from django.utils.safestring import SafeText
 
 
-class OutpostFinder(BaseFinder):
-    def check(self, **kwargs):
-        errors = []
-        if not isinstance(settings.OUTPOST_STATIC_PATHS, (list, tuple)):
-            errors.append(
-                Error(
-                    "The OUTPOST_STATIC_PATHS setting is not a list.",
-                    hint="Perhaps you forgot to include it in your settings?",
-                    id="outpost.django.E001",
+class ScopedFileSystemStorage(FileSystemStorage):
+    def __init__(self, location, directory, *args, **kwargs):
+        super().__init__(location, *args, **kwargs)
+        self._directory = Path(directory)
+
+    def path(self, path):
+        p = Path(path)
+        if (
+            len(p.parts) >= len(self._directory.parts)
+            and p.parts[: len(self._directory.parts)] == self._directory.parts
+        ):
+            parts = p.parts[len(self._directory.parts) :]
+        else:
+            parts = p.parts
+        return str(Path(self.location).joinpath(*parts))
+
+    def listdir(self, path):
+        directories, files = [], []
+        for e in Path(self.path(path)).glob("*"):
+            if e.is_dir():
+                directories.append(e.name)
+            else:
+                files.append(e.name)
+        return directories, files
+
+
+class SystemFinder(BaseFinder):
+    def __init__(self, app_names=None, *args, **kwargs):
+        self.storages = dict(
+            enumerate(
+                map(
+                    lambda l: FileSystemStorage(location=l),
+                    chain(*settings.SYSTEM_STATIC_PATHS.values()),
                 )
             )
-        for entry in settings.OUTPOST_STATIC_PATHS:
-            if not isinstance(entry, tuple):
-                errors.append(
-                    Error(
-                        f"Not a valid mapping for OUTPOST_STATIC_PATHS: {entry}",
-                        hint="Mapping should be defined as tuple.",
-                        id="outpost.django.E002",
-                    )
-                )
-            if len(entry) != 2:
-                errors.append(
-                    Error(
-                        f"Not a valid mapping for OUTPOST_STATIC_PATHS: {entry}",
-                        hint="Mapping needs a virtual and a local path.",
-                        id="outpost.django.E003",
-                    )
-                )
-            virtual, local = entry
-            if len(virtual) == 0:
-                errors.append(
-                    Error(
-                        f"Not a valid mapping for OUTPOST_STATIC_PATHS: {entry}",
-                        hint="Virtual path must not be empty.",
-                        id="outpost.django.E004",
-                    )
-                )
-            if not virtual.endswith("/"):
-                errors.append(
-                    Error(
-                        f"Not a valid mapping for OUTPOST_STATIC_PATHS: {entry}",
-                        hint="Virtual path must end with slash.",
-                        id="outpost.django.E005",
-                    )
-                )
-            if not os.path.exists(local):
-                errors.append(
-                    Error(
-                        f"Not a valid mapping for OUTPOST_STATIC_PATHS: {entry}",
-                        hint="Local path does not exist.",
-                        id="outpost.django.E006",
-                    )
-                )
-        return errors
+        )
+        self.entries = dict(
+            map(
+                lambda k: (
+                    Path(k),
+                    [Path(p) for p in settings.SYSTEM_STATIC_PATHS.get(k)],
+                ),
+                settings.SYSTEM_STATIC_PATHS.keys(),
+            )
+        )
+        super().__init__(*args, **kwargs)
 
-    def find(self, path, all=False):
+    def check(self, **kwargs):
+        if not isinstance(settings.SYSTEM_STATIC_PATHS, dict):
+            yield Error(
+                "The SYSTEM_STATIC_PATHS setting is not a dictionary.",
+                hint="Perhaps you forgot to include it in your settings?",
+                id=f"{__name__}.E001",
+            )
+        for virtual, paths in settings.SYSTEM_STATIC_PATHS.items():
+            if len(virtual) == 0:
+                yield Error(
+                    f"Not a valid mapping for SYSTEM_STATIC_PATHS: {virtual}",
+                    hint="Virtual path must not be empty.",
+                    id=f"{__name__}.E002",
+                )
+            if not isinstance(paths, (tuple, list)):
+                yield Error(
+                    f"Not a valid mapping for SYSTEM_STATIC_PATHS: {virtual}",
+                    hint="Local mapping paths should be defined as tuple or list.",
+                    id=f"{__name__}.E003",
+                )
+            for path in paths:
+                if not Path(path).exists():
+                    yield Error(
+                        f"Not a valid mapping for SYSTEM_STATIC_PATHS: {virtual}",
+                        hint=f"Local path {path} does not exist.",
+                        id=f"{__name__}.E004",
+                    )
+                if not Path(path).is_dir():
+                    yield Error(
+                        f"Not a valid mapping for SYSTEM_STATIC_PATHS: {virtual}",
+                        hint=f"Local path {path} is not a directory.",
+                        id=f"{__name__}.E005",
+                    )
+
+    def find(self, name, all=False):
+        # Unfuck Django SafeText implementation
+        if isinstance(name, SafeText):
+            path = Path(name.encode().decode())
+        else:
+            path = Path(name)
         matches = []
-        for virtual, local in settings.OUTPOST_STATIC_PATHS:
-            if not path.startswith(virtual):
+        for virtual, paths in self.entries.items():
+            if path.parts[: len(virtual.parts)] != virtual.parts:
                 continue
-            path = os.path.join(local, path[len(virtual) :])
-            if not os.path.exists(path):
-                continue
-            if not all:
-                return path
-            matches.append(path)
+            for local in paths:
+                match = local.joinpath(*path.parts[len(virtual.parts) :])
+                if not match.exists():
+                    continue
+                if not all:
+                    return str(match)
+                matches.append(str(match))
         return matches
 
     def list(self, ignore_patterns):
-        for virtual, local in settings.OUTPOST_STATIC_PATHS:
-            storage = FileSystemStorage(location=os.path.dirname(local))
-            files = utils.get_files(
-                storage, ignore_patterns, location=os.path.basename(local)
-            )
-            for path in files:
-                yield path, storage
+        for virtual, paths in self.entries.items():
+            for path in paths:
+                storage = ScopedFileSystemStorage(
+                    location=str(path), directory=str(virtual)
+                )
+                files = utils.get_files(storage, ignore_patterns)
+                for name in files:
+                    yield str(virtual / name), storage
