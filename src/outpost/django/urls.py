@@ -71,7 +71,7 @@ for app in sorted(apps.get_app_configs(), key=lambda app: app.label):
         module = import_module(urls)
     except ModuleNotFoundError:
         continue
-    path = getattr(module, "path", f"^{app.label}/")
+    path = getattr(module, "BASE_PATH", f"^{app.label}/")
     urlpatterns.append(url(path, include(urls, namespace=app.label)))
 
 urlpatterns.extend(
