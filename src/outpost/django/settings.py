@@ -88,6 +88,7 @@ INSTALLED_APPS = [
     "constance",
     "global_permissions",
     "formtools",
+    "qr_code",
 ]
 
 MIDDLEWARE = [
