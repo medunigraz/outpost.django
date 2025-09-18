@@ -11,7 +11,7 @@ import saml2
 import saml2.attributemaps
 import saml2.saml
 from corsheaders.defaults import default_methods
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django_auth_ldap.config import (
     GroupOfNamesType,
     LDAPSearch,
@@ -62,21 +62,17 @@ INSTALLED_APPS = [
     "rest_framework_gis",
     "oauth2_provider",
     "corsheaders",
-    # 'dynamic_scraper',
     "haystack",
     "polymorphic",
     "ordered_model",
     "django_celery_results",
     "django_celery_beat",
-    # "celery_haystack",
     "rules.apps.AutodiscoverRulesConfig",
-    "overextends",
     "netfields",
     "imagekit",
     "taggit",
     "memoize",
     "django_filters",
-    # "rest_hooks",
     "django_prometheus",
     "djangosaml2",
     "recurrence",
@@ -86,7 +82,7 @@ INSTALLED_APPS = [
     "ckeditor_uploader",
     "drf_spectacular",
     "constance",
-    "global_permissions",
+    #"global_permissions",
     "formtools",
     "qr_code",
 ]
@@ -121,7 +117,6 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
-            "builtins": ["overextends.templatetags.overextends_tags"],
         },
     }
 ]
@@ -135,6 +130,7 @@ DATABASES = {
         "NAME": os.path.join(BASE_DIR, "development.db"),
     }
 }
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 CACHES = {
     "default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache"},
@@ -448,7 +444,6 @@ OAUTH2_PROVIDER = {
 OAUTH2_PROVIDER_APPLICATION_MODEL = "oauth2.Application"
 
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_REPLACE_HTTPS_REFERER = True
 CORS_ALLOW_METHODS = default_methods + (
     "START",
     "STOP",
