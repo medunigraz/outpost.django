@@ -82,7 +82,7 @@ INSTALLED_APPS = [
     "ckeditor_uploader",
     "drf_spectacular",
     "constance",
-    #"global_permissions",
+    # "global_permissions",
     "formtools",
     "qr_code",
 ]
@@ -524,9 +524,11 @@ LOGGING = {
         },
         "graylog": {
             "level": "WARNING",
-            "class": "graypy.GELFUDPHandler"
-            if getattr(graypy, "__version__", tuple()) >= (1, 1, 3)
-            else "graypy.GELFHandler",
+            "class": (
+                "graypy.GELFUDPHandler"
+                if getattr(graypy, "__version__", tuple()) >= (1, 1, 3)
+                else "graypy.GELFHandler"
+            ),
             "host": "localhost",
             "port": 12201,
             "filters": ["static_fields"],

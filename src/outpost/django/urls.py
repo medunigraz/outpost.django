@@ -1,6 +1,7 @@
 """
 Outpost URL Configuration
 """
+
 import logging
 from importlib import import_module
 
@@ -32,7 +33,9 @@ if settings.DEBUG:
 
     urlpatterns.extend(
         [
-            re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
+            re_path(
+                r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}
+            ),
             re_path(
                 r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}
             ),
@@ -54,9 +57,11 @@ urlpatterns.extend(
         path(
             "saml2/",
             include(
-                ("djangosaml2.urls", "saml2")
-                if django.VERSION >= (2, 1)
-                else "djangosaml2.urls",
+                (
+                    ("djangosaml2.urls", "saml2")
+                    if django.VERSION >= (2, 1)
+                    else "djangosaml2.urls"
+                ),
                 namespace="saml2",
             ),
         ),
