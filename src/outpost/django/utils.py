@@ -13,6 +13,8 @@ class IPList(list):
             self.append(IP(address))
 
     def __contains__(self, address):
+        if not address:
+            return True
         for net in self:
             if address in net:
                 return True
