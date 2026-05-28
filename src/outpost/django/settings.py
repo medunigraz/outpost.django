@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "django.contrib.admin",
     "django_extensions",
     "crispy_forms",
+    "crispy_bootstrap4",
     "guardian",
     "reversion",
     "compressor",
