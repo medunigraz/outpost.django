@@ -481,6 +481,7 @@ CELERY_RESULTS_BACKEND = "django-db"
 CELERY_TASK_DEFAULT_QUEUE = "default"
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = ("bootstrap4",)
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 HOOK_DELIVERER = "outpost.django.base.hooks.deliver_hook_wrapper"
