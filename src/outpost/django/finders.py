@@ -90,7 +90,7 @@ class SystemFinder(BaseFinder):
                         id=f"{__name__}.E005",
                     )
 
-    def find(self, name, all=False):
+    def find(self, name, find_all=False):
         # Unfuck Django SafeText implementation
         if isinstance(name, SafeText):
             path = Path(name.encode().decode())
@@ -104,7 +104,7 @@ class SystemFinder(BaseFinder):
                 match = local.joinpath(*path.parts[len(virtual.parts) :])
                 if not match.exists():
                     continue
-                if not all:
+                if not find_all:
                     return str(match)
                 matches.append(str(match))
         return matches
