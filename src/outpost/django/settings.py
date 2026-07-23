@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     "memoize",
     "django_filters",
     "django_prometheus",
+    "django_comments",
     "djangosaml2",
     "recurrence",
     "markupfield",

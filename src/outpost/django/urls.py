@@ -54,6 +54,7 @@ urlpatterns.extend(
         path("prometheus/", include("django_prometheus.urls")),
         path("ckeditor/", include("ckeditor_uploader.urls")),
         path("auth/token/", authtoken.obtain_auth_token),
+        path('comments/', include('django_comments.urls')),
         path(
             "saml2/",
             include(
