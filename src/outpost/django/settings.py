@@ -513,6 +513,10 @@ LOGGING = {
             "()": f"{__package__}.logging.StaticFieldFilter",
             "fields": {"project": "development"},
         },
+        "ignore_disallowed_hosts": {
+            "()": f"{__package__}.logging.NameFilter",
+            "names": ("django.security.DisallowedHost",),
+        },
     },
     "handlers": {
         "console": {
@@ -524,6 +528,7 @@ LOGGING = {
         "mail_admins": {
             "level": "ERROR",
             "class": "django.utils.log.AdminEmailHandler",
+            "filters": ["ignore_disallowed_hosts", "static_fields"],
         },
         "graylog": {
             "level": "WARNING",
