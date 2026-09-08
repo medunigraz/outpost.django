@@ -16,16 +16,16 @@ class StaticFieldFilter(logging.Filter):
         return True
 
 
-class NameFilter(logging.Filter):
+class ExceptionFilter(logging.Filter):
     """
-    Python logging filter that ignores certain record names.
+    Python logging filter that ignores certain Exceptions.
     """
 
-    def __init__(self, names):
-        self.names = names
+    def __init__(self, exceptions):
+        self.exceptions = exceptions
 
     def filter(self, record):
-        name = getattr(record, "name", None)
-        if not name:
+        if not record.exc_info:
             return True
-        return name not in self.names
+        t, *_ = record.exc_info
+        return t not in self.exceptions

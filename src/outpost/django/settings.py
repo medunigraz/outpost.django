@@ -11,6 +11,7 @@ import saml2
 import saml2.attributemaps
 import saml2.saml
 from corsheaders.defaults import default_methods
+from django.core.exceptions import DisallowedHost
 from django.utils.translation import gettext_lazy as _
 from django_auth_ldap.config import (
     GroupOfNamesType,
@@ -514,8 +515,8 @@ LOGGING = {
             "fields": {"project": "development"},
         },
         "ignore_disallowed_hosts": {
-            "()": f"{__package__}.logging.NameFilter",
-            "names": ("django.security.DisallowedHost",),
+            "()": f"{__package__}.logging.ExceptionFilter",
+            "exceptions": (DisallowedHost,),
         },
     },
     "handlers": {
