@@ -543,6 +543,7 @@ LOGGING = {
             "port": 12201,
             "filters": ["static_fields"],
         },
+        "null": {"class": "logging.NullHandler"},
     },
     "loggers": {
         "root": {"level": "INFO", "handlers": []},
@@ -550,7 +551,7 @@ LOGGING = {
         "celery_haystack": {"handlers": [], "level": "INFO"},
         "daphne": {"handlers": [], "level": "INFO"},
         "django": {"handlers": [], "level": "INFO"},
-        "django_dbconn_retry": {"handlers": [], "level": "INFO"},
+        "django_dbconn_retry.apps": {"handlers": ["null"], "propagate": False},
         "djangosaml2": {"handlers": [], "level": "INFO"},
         "guardian": {"handlers": [], "level": "INFO"},
         "haystack": {"handlers": [], "level": "INFO"},
