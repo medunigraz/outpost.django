@@ -528,6 +528,7 @@ LOGGING = {
         "mail_admins": {
             "level": "ERROR",
             "class": "django.utils.log.AdminEmailHandler",
+            "include_html": True,
             "filters": ["ignore_disallowed_hosts", "static_fields"],
         },
         "graylog": {
