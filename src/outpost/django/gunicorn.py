@@ -6,3 +6,4 @@ workers = int(
 )
 worker_class = "uvicorn.workers.UvicornH11Worker"
 control_socket_disable = True
+preload_app = True
