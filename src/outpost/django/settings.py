@@ -88,6 +88,7 @@ INSTALLED_APPS = [
     # "global_permissions",
     "formtools",
     "qr_code",
+    "django_object_actions",
 ]
 
 MIDDLEWARE = [
@@ -485,6 +486,8 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = ("bootstrap4",)
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+DJANGO_OBJECT_ACTIONS_DEFAULT_HTTP_METHOD = "POST"
 
 HOOK_DELIVERER = "outpost.django.base.hooks.deliver_hook_wrapper"
 HOOK_EVENTS = {}
